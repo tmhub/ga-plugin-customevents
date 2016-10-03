@@ -1,0 +1,33 @@
+<?xml version="1.0" ?>
+<config>
+
+    <modules>
+        <TM_GaPluginEvents>
+            <version>0.9.0</version>
+        </TM_GaPluginEvents>
+    </modules>
+
+    <global>
+        <blocks>
+            <tm_gapluginevents>
+                <class>TM_GaPluginEvents_Block</class>
+            </tm_gapluginevents>
+        </blocks>
+        <helpers>
+            <tm_gapluginevents>
+                <class>TM_GaPluginEvents_Helper</class>
+            </tm_gapluginevents>
+        </helpers>
+    </global>
+
+    <frontend>
+        <layout>
+            <updates>
+                <tm_gapluginevents module="TM_GaPluginEvents">
+                    <file>tm/gapluginevents.xml</file>
+                </tm_gapluginevents>
+            </updates>
+        </layout>
+    </frontend>
+
+</config>

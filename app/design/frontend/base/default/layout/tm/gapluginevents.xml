@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<layout>
+    <default>
+        <reference name="head">
+            <action method="addJs" ifconfig="tm_googleanalytics/events/enabled">
+                <script>tm/lib/gaevents/jquery.gaevents.js</script>
+                <params>defer</params>
+            </action>
+        </reference>
+        <!-- <reference name="before_body_end">
+            <block type="core/template" name="scrolldepth_init">
+                <action method="setTemplate">
+                    <template>tm/ga_scrolldepth_init.phtml</template>
+                </action>
+            </block>
+        </reference> -->
+    </default>
+</layout>
