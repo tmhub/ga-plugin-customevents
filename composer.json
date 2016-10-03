@@ -1,9 +1,9 @@
 {
-    "name": "tm/ga-plugin-customevents",
+    "name": "tm/ga-plugin-events",
     "type": "magento-module",
-    "homepage": "https://github.com/tmhub/ga-plugin-customevents",
+    "homepage": "https://github.com/tmhub/ga-plugin-events",
     "license": "OSL-3.0",
-    "description": "Google Analytics plugin to send custom events",
+    "description": "Google Analytics plugin to send additional events",
     "authors": [
         {
             "name": "Templates-Master Team",
