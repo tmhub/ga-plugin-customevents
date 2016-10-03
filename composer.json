@@ -1,0 +1,16 @@
+{
+    "name": "tm/ga-plugin-customevents",
+    "type": "magento-module",
+    "homepage": "https://github.com/tmhub/ga-plugin-customevents",
+    "license": "OSL-3.0",
+    "description": "Google Analytics plugin to send custom events",
+    "authors": [
+        {
+            "name": "Templates-Master Team",
+            "email": "support@templates-master.com"
+        }
+    ],
+    "require": {
+        "tm/core": "*"
+    }
+}
