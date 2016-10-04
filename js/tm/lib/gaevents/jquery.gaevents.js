@@ -15,13 +15,12 @@
 
   "use strict";
 
-  $.gaEvents = function() {
+  var universalGA = false,
+    classicGA = false,
+    gaGlobal,
+    standardEventHandler;
 
-    var //$window = $(window),
-      universalGA = false,
-      classicGA = false,
-      gaGlobal,
-      standardEventHandler;
+  $.gaEvents = function(data) {
 
     if (typeof ga === "function") {
       universalGA = true;
@@ -35,15 +34,80 @@
       classicGA = true;
     }
 
-    if (typeof dataLayer !== "undefined" && typeof dataLayer.push === "function" && !options.gtmOverride) {
+    if (typeof dataLayer !== "undefined" && typeof dataLayer.push === "function") {
       standardEventHandler = function(data) {
         dataLayer.push(data);
       };
     }
 
-    $(document).on('click', '.btn-cart', function(e){
-      console.log(e.target);
+    function sendEvent(category, action, label, value) {
+
+      console.log(arguments);
+      return;
+
+      if (standardEventHandler) {
+
+        standardEventHandler({
+          'event': 'Custom Event',
+          'eventCategory': category,
+          'eventAction': action,
+          'eventLabel': label,
+          'eventValue': value,
+          'eventNonInteraction': true
+        });
+
+      } else {
+
+        if (universalGA) {
+          window[gaGlobal]('send', 'event', category, action, label, value, {'nonInteraction': true});
+        }
+
+        if (classicGA) {
+          _gaq.push(['_trackEvent', category, action, label, value, true]);
+        }
+
+      }
+
+    }
+
+    function getProductName(element, parentSelector) {
+      return $(element)
+        .closest(parentSelector)
+        .find('.product-name')
+        .text();
+    }
+
+    function getProductPrice(element, parentSelector) {
+      var price = $(element)
+        .closest(parentSelector)
+        .find('.special-price .price, .regular-price .price')
+        .text();
+        console.log(price);
+      price = price.replace(/[^\d.-]/g, ''); // remove all chars except digits and dot
+      return Math.round(parseFloat(price));
+    }
+
+    $(document).on('click', '.main-container .btn-cart', function(e){
+      var target = $(e.target);
+      var parent = target.closest('.main-container .btn-cart');
+      if (parent.data('gaEventClickOff')) {
+        return;
+      }
+      // set action name for ga event
+      var actionName = parent.text();
+      if (actionName.length < 2) {
+        actionName = 'Add to Cart'
+      }
+      sendEvent(
+        'Category View',
+        actionName,
+        getProductName(parent, '.item'),
+        getProductPrice(parent, '.item')
+      );
     });
+
+    // suppress add to cart click event
+    $('.product-essential .btn-cart').data('gaEventClickOff', true);
 
   }
 
