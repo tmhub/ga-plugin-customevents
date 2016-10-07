@@ -1,4 +1,6 @@
 app/code/community/TM/GaPluginEvents                          app/code/community/TM/GaPluginEvents
 app/design/frontend/base/default/layout/tm/gapluginevents.xml app/design/frontend/base/default/layout/tm/gapluginevents.xml
+app/design/frontend/base/default/template/tm/gapluginevents   app/design/frontend/base/default/template/tm/gapluginevents
 app/etc/modules/TM_GaPluginEvents.xml                         app/etc/modules/TM_GaPluginEvents.xml
 js/tm/lib/gaevents                                            js/tm/lib/gaevents
+skin/frontend/base/default/js/tm/init.gaevents.js             skin/frontend/base/default/js/tm/init.gaevents.js

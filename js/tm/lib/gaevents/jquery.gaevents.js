@@ -20,7 +20,7 @@
     gaGlobal,
     standardEventHandler;
 
-  $.gaEvents = function(data) {
+  $.gaEvents = function(listenJsEvents) {
 
     if (typeof ga === "function") {
       universalGA = true;
@@ -41,9 +41,6 @@
     }
 
     function sendEvent(category, action, label, value) {
-
-      console.log(arguments);
-      return;
 
       if (standardEventHandler) {
 
@@ -70,44 +67,29 @@
 
     }
 
-    function getProductName(element, parentSelector) {
-      return $(element)
-        .closest(parentSelector)
-        .find('.product-name')
-        .text();
-    }
-
-    function getProductPrice(element, parentSelector) {
-      var price = $(element)
-        .closest(parentSelector)
-        .find('.special-price .price, .regular-price .price')
-        .text();
-        console.log(price);
-      price = price.replace(/[^\d.-]/g, ''); // remove all chars except digits and dot
-      return Math.round(parseFloat(price));
-    }
-
-    $(document).on('click', '.main-container .btn-cart', function(e){
-      var target = $(e.target);
-      var parent = target.closest('.main-container .btn-cart');
-      if (parent.data('gaEventClickOff')) {
-        return;
-      }
-      // set action name for ga event
-      var actionName = parent.text();
-      if (actionName.length < 2) {
-        actionName = 'Add to Cart'
-      }
-      sendEvent(
-        'Category View',
-        actionName,
-        getProductName(parent, '.item'),
-        getProductPrice(parent, '.item')
+    for (var i = 0; i < listenJsEvents.length; i++) {
+      var jsEvent = listenJsEvents[i];
+      $(document).on(
+        jsEvent.name,
+        jsEvent.selector,
+        jsEvent.handler,
+        function(e){
+          var handler = e.data;
+          var gaEventData = false;
+          if (handler) {
+            gaEventData = handler(e.target);
+          }
+          if (gaEventData) {
+            sendEvent(
+              gaEventData.category,
+              gaEventData.action,
+              gaEventData.label,
+              gaEventData.value
+            );
+          }
+        }
       );
-    });
-
-    // suppress add to cart click event
-    $('.product-essential .btn-cart').data('gaEventClickOff', true);
+    }
 
   }
 

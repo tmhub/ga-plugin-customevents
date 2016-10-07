@@ -6,13 +6,18 @@
                 <script>tm/lib/gaevents/jquery.gaevents.js</script>
                 <params>defer</params>
             </action>
+            <action method="addItem" ifconfig="tm_googleanalytics/events/enabled">
+                <type>skin_js</type>
+                <name>js/tm/init.gaevents.js</name>
+                <params>defer</params>
+            </action>
         </reference>
-        <!-- <reference name="before_body_end">
-            <block type="core/template" name="scrolldepth_init">
-                <action method="setTemplate">
-                    <template>tm/ga_scrolldepth_init.phtml</template>
+        <reference name="before_body_end">
+            <block type="core/template" name="gaevent_addtocart_init">
+                <action method="setTemplate" ifconfig="tm_googleanalytics/events/enabled">
+                    <template>tm/gapluginevents/init_addtocart.phtml</template>
                 </action>
             </block>
-        </reference> -->
+        </reference>
     </default>
 </layout>

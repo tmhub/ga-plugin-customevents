@@ -1,0 +1,25 @@
+<?php
+    $controller = array();
+    $controller[] = Mage::app()->getRequest()->getModuleName();
+    $controller[] = Mage::app()->getRequest()->getControllerName();
+    $controller[] = Mage::app()->getRequest()->getActionName();
+    // remove index action or controller
+    while (count($controller) > 1) {
+        $i = count($controller) - 1;
+        if ($controller[$i] != 'index') {
+            break;
+        }
+        array_pop($controller);
+    }
+    // workaround to determinate highlight type
+    if (strtolower($controller[0]) == 'highlight') {
+        $controller[] = Mage::app()->getRequest()->getParam('type');
+    }
+    $controller = array_map('ucfirst', $controller);
+
+?>
+<script type="text/javascript">
+    $j(function() {
+      analitycs.addToCart.init('<?php echo implode($controller, ' ')?>');
+    });
+</script>
