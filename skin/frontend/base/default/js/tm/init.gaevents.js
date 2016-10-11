@@ -32,7 +32,7 @@
 
         sendGaEventClick: function(target){
 
-            var button = $(target).closest('.main-container .btn-cart');
+            var button = $(target).closest('.btn-cart');
             if (button.data('gaEventButtonClickOff')) {
                 return false;
             }
@@ -70,7 +70,7 @@ $j(function() {
     $j.gaEvents([
         {
             name: 'click',
-            selector: '.main-container .btn-cart',
+            selector: '.btn-cart',
             handler: analitycs.addToCart.sendGaEventClick.bind(analitycs.addToCart)
         },
         {
@@ -93,4 +93,21 @@ $j(function() {
         );
     }
 
+
 });
+
+// after initalizing AjaxPro prevent sending GA event on click in product listing
+document.observe("AjaxPro:addObservers:after", function(){
+    $$('.btn-cart').each(function(el){
+        var onClickValue = el.readAttribute('onclick');
+        if (typeof onClickValue !== 'string') {
+            onClickValue = '';
+        }
+        console.log(onClickValue);
+        if (onClickValue.search('checkout/cart/add') === -1) {
+            $j(el).data('gaEventButtonClickOff', true);
+        } else {
+            $j(el).data('gaEventButtonClickOff', false);
+        }
+    });
+})
