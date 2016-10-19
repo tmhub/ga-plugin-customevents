@@ -80,6 +80,7 @@
             gaEventData = handler(e.target);
           }
           if (gaEventData) {
+            console.log(gaEventData); return;
             sendEvent(
               gaEventData.category,
               gaEventData.action,

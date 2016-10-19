@@ -8,7 +8,12 @@
             </action>
             <action method="addItem" ifconfig="tm_googleanalytics/events/enabled">
                 <type>skin_js</type>
-                <name>js/tm/init.gaevents.js</name>
+                <name>js/tm/gaevents/init.js</name>
+                <params>defer</params>
+            </action>
+            <action method="addItem" ifconfig="ajax_pro/general/enabled">
+                <type>skin_js</type>
+                <name>js/tm/gaevents/integration/ajaxpro.js</name>
                 <params>defer</params>
             </action>
         </reference>
