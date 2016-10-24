@@ -3,6 +3,8 @@
 //
 document.observe("AjaxPro:addObservers:after", function(){
 
+    if (typeof window.analitycs === 'undefined') { return; }
+
     // after initalizing AjaxPro prevent sending GA event on click in product listing
     $$('.btn-cart').each(function(el){
         if (typeof $j(el).data('gaEventButtonClickOff') !== 'undefined' ) {
@@ -26,9 +28,13 @@ document.observe("AjaxPro:addObservers:after", function(){
 });
 
 document.observe("AjaxPro:click:stop", function(event){
+
+    if (typeof window.analitycs === 'undefined') { return; }
+
     // send custom event if add to compare clicked
     var element = Event.element(event.memo);
     if (element.hasClassName('link-compare')) {
         $j(element).trigger('gaevent:product:addedtocompare');
     }
+
 });

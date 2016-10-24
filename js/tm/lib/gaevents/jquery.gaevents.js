@@ -82,15 +82,13 @@
             if ($('body').hasClass('gaevents-debug')) {
               // send data to console if debug enabled
               console.log(gaEventData);
-            } else {
-              sendEvent(
-                gaEventData.category,
-                gaEventData.action,
-                gaEventData.label,
-                gaEventData.value
-              );
-
             }
+            sendEvent(
+              gaEventData.category,
+              gaEventData.action,
+              gaEventData.label,
+              gaEventData.value
+            );
           }
         }
       );

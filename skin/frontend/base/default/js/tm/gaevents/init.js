@@ -12,7 +12,9 @@
 
     function getProductName(element, parentSelector) {
         var name = $(element).closest(parentSelector)
-            .find(this.productNameSelector).text();
+            .find(this.productNameSelector).first().text();
+        // console.log($(element).closest(parentSelector)
+        //     .find(this.productNameSelector));
         return $.trim(name);
     }
 
@@ -87,10 +89,10 @@
             this.productNameSelector = '.product-name';
         },
 
-        sendGaEventClick: function(target){
+        sendGaEvent: function(target){
 
             var button = $(target);
-            if (button.data('gaEventButtonClickOff')) {
+            if (button.data('gaEventStop')) {
                 return false;
             }
 
@@ -100,10 +102,6 @@
                 label: getProductName.call(this, button, '.item, .product-essential'),
                 value: getProductPrice.call(this, button, '.item, .product-essential')
             }
-        },
-
-        sendGaEventAddedToCompare: function(target){
-            // this.sendGaEventClick
         }
 
     };
@@ -134,15 +132,23 @@ $j(function() {
 
     $j.gaEvents([
         {
-            name: 'click',
-            selector: '.link-compare',
-            handler: analitycs.addToCompare.sendGaEventClick.bind(analitycs.addToCompare)
-        },
-        {
             name: 'gaevent:product:addedtocompare',
             selector: '',
-            handler: analitycs.addToCompare.sendGaEventClick.bind(analitycs.addToCompare)
+            handler: analitycs.addToCompare.sendGaEvent.bind(analitycs.addToCompare)
         }
     ]);
+
+    $j('body').on('click', function(e){
+        var url = $j(e.target).attr('href');
+        if (typeof url !== 'undefined') {
+            if (url.indexOf('catalog/product_compare/add') != -1) {
+                // it is addto compare click
+                $j(e.target).trigger('gaevent:product:addedtocompare');
+            } else if (url.indexOf('wishlist/index/add') != -1) {
+                // it is add to wishlist click
+                $j(e.target).trigger('gaevent:product:addedtowishlist');
+            }
+        }
+    })
 
 });
