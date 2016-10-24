@@ -69,27 +69,32 @@
 
     for (var i = 0; i < listenJsEvents.length; i++) {
       var jsEvent = listenJsEvents[i];
+
       $(document).on(
-        jsEvent.name,
-        jsEvent.selector,
-        jsEvent.handler,
-        function(e){
-          var handler = e.data;
-          var gaEventData = false;
+        jsEvent.name, jsEvent.selector, jsEvent.handler, function(e){
+          var handler = e.data,
+              gaEventData = false;
           if (handler) {
             gaEventData = handler(e.target);
           }
           if (gaEventData) {
-            console.log(gaEventData); return;
-            sendEvent(
-              gaEventData.category,
-              gaEventData.action,
-              gaEventData.label,
-              gaEventData.value
-            );
+            var debugMode = $('body').hasClass('gaevents-debug');
+            if ($('body').hasClass('gaevents-debug')) {
+              // send data to console if debug enabled
+              console.log(gaEventData);
+            } else {
+              sendEvent(
+                gaEventData.category,
+                gaEventData.action,
+                gaEventData.label,
+                gaEventData.value
+              );
+
+            }
           }
         }
       );
+
     }
 
   }

@@ -1,6 +1,11 @@
 <?xml version="1.0" ?>
 <layout>
     <default>
+        <reference name="root">
+            <action method="addBodyClass">
+                <classname>gaevents-debug</classname>
+            </action>
+        </reference>
         <reference name="head">
             <action method="addJs" ifconfig="tm_googleanalytics/events/enabled">
                 <script>tm/lib/gaevents/jquery.gaevents.js</script>
