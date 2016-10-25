@@ -31,10 +31,17 @@ document.observe("AjaxPro:click:stop", function(event){
 
     if (typeof window.analitycs === 'undefined') { return; }
 
-    // send custom event if add to compare clicked
     var element = Event.element(event.memo);
-    if (element.hasClassName('link-compare')) {
-        $j(element).trigger('gaevent:product:addedtocompare');
+    var url = $j(element).attr('href');
+
+    if (typeof url !== 'undefined') {
+        if (url.indexOf('catalog/product_compare/add') != -1) {
+            // it is addto compare click
+            $j(element).trigger('gaevent:product:addedtocompare');
+        } else if (url.indexOf('wishlist/index/add') != -1) {
+            // it is add to wishlist click
+            $j(element).trigger('gaevent:product:addedtowishlist');
+        }
     }
 
 });

@@ -79,7 +79,7 @@
           }
           if (gaEventData) {
             var debugMode = $('body').hasClass('gaevents-debug');
-            if ($('body').hasClass('gaevents-debug')) {
+            if (debugMode) {
               // send data to console if debug enabled
               console.log(gaEventData);
             }

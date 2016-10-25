@@ -13,8 +13,6 @@
     function getProductName(element, parentSelector) {
         var name = $(element).closest(parentSelector)
             .find(this.productNameSelector).first().text();
-        // console.log($(element).closest(parentSelector)
-        //     .find(this.productNameSelector));
         return $.trim(name);
     }
 
@@ -31,8 +29,8 @@
     // add to cart events listening
     window.analitycs.addToCart = {
 
-        init: function() {
-            this.parent = window.analitycs;
+        init: function(parent) {
+            this.parent = parent;
             this.priceSelector = '.special-price .price, .regular-price .price';
             this.productNameSelector = '.product-name';
         },
@@ -65,26 +63,27 @@
         },
 
         wrapProductAddToCartSubmit: function() {
-            // objects are passed by reference
-            var atcForm = window.productAddToCartForm;
-            if (typeof atcForm !== 'undefined' && !atcForm.wrappedByAnalitycs) {
-                atcForm.wrappedByAnalitycs = true; // prevent multiple wrapping
-                atcForm.submit = atcForm.submit.wrap(function(callOriginal, button, url) {
-                    callOriginal(button, url);
-                    if (this.validator.validate()) {
-                        $j(this.form).trigger('gaevent:product:submitted');
+            if (typeof productAddToCartForm !== 'undefined') {
+                productAddToCartForm.submit = productAddToCartForm.submit.wrap(
+                    function(callOriginal, button, url, gaEventTriggered = {value: false}) {
+                        callOriginal(button, url, gaEventTriggered);
+                        if (this.validator.validate() && !gaEventTriggered.value) {
+                            // trigger event only ones to prevent duplicated calls
+                            $j(this.form).trigger('gaevent:product:submitted');
+                            gaEventTriggered.value = true;
+                        }
                     }
-                });
+                );
             }
         }
 
     };
-    window.analitycs.addToCart.init();
+    window.analitycs.addToCart.init(window.analitycs);
 
     // add to compare events listening
     window.analitycs.addToCompare = {
-        init: function() {
-            this.parent = window.analitycs;
+        init: function(parent) {
+            this.parent = parent;
             this.priceSelector = '.special-price .price, .regular-price .price';
             this.productNameSelector = '.product-name';
         },
@@ -105,8 +104,33 @@
         }
 
     };
+    window.analitycs.addToCompare.init(window.analitycs);
 
-    window.analitycs.addToCompare.init();
+    // add to whishlist events listening
+    window.analitycs.addToWishlist = {
+        init: function(parent) {
+            this.parent = parent;
+            this.priceSelector = '.special-price .price, .regular-price .price';
+            this.productNameSelector = '.product-name';
+        },
+
+        sendGaEvent: function(target){
+
+            var button = $(target);
+            if (button.data('gaEventStop')) {
+                return false;
+            }
+
+            return {
+                category : this.parent.mageController,
+                action: button.text(),
+                label: getProductName.call(this, button, '.item, .product-essential'),
+                value: getProductPrice.call(this, button, '.item, .product-essential')
+            }
+        }
+
+    };
+    window.analitycs.addToWishlist.init(window.analitycs);
 
 })($j);
 
@@ -135,6 +159,14 @@ $j(function() {
             name: 'gaevent:product:addedtocompare',
             selector: '',
             handler: analitycs.addToCompare.sendGaEvent.bind(analitycs.addToCompare)
+        }
+    ]);
+
+    $j.gaEvents([
+        {
+            name: 'gaevent:product:addedtowishlist',
+            selector: '',
+            handler: analitycs.addToWishlist.sendGaEvent.bind(analitycs.addToWishlist)
         }
     ]);
 
