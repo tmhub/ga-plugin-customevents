@@ -132,10 +132,35 @@
     };
     window.analitycs.addToWishlist.init(window.analitycs);
 
+    // subscribe to newsletter event listening
+    window.analitycs.newsletterSubscribe = {
+        init: function(parent){
+            this.parent = parent;
+            this.buttonSelector = 'button';
+            this.formSelector = '#newsletter-validate-detail';
+        },
+
+        sendGaEvent: function(target){
+
+            var form = $(target).closest(this.formSelector);
+            var email = $(form).find('[type=email]');
+            var actionText = $(email).attr('title') ? $(email).attr('title') : $(target).text();
+
+            return {
+                category : this.parent.mageController,
+                action: actionText,
+                label: '',
+                value: ''
+            }
+        }
+    };
+    window.analitycs.newsletterSubscribe.init(window.analitycs);
+
 })($j);
 
 $j(function() {
 
+    // 1. HOOK EVENT ADD TO CART
     // prevent sending GA event on 'add to cart' on product view page
     $j('.product-essential .btn-cart').data('gaEventButtonClickOff', true);
 
@@ -154,6 +179,7 @@ $j(function() {
 
     analitycs.addToCart.wrapProductAddToCartSubmit();
 
+    // 2. HOOK EVENT ADD TO COMPARE
     $j.gaEvents([
         {
             name: 'gaevent:product:addedtocompare',
@@ -162,6 +188,7 @@ $j(function() {
         }
     ]);
 
+    // 3. HOOK EVENT ADD TO WISHLIST
     $j.gaEvents([
         {
             name: 'gaevent:product:addedtowishlist',
@@ -170,6 +197,16 @@ $j(function() {
         }
     ]);
 
+    // 4. HOOK EVENT NEWSLETTER SUBSCRIBTION
+    $j.gaEvents([
+        {
+            name: 'submit',
+            selector: analitycs.newsletterSubscribe.formSelector,
+            handler: analitycs.newsletterSubscribe.sendGaEvent.bind(analitycs.newsletterSubscribe)
+        }
+    ]);
+
+    // TRIGER CUSTOM EVENTS FOR ADD TO COMPARE/WISHLIST (THEY HOOKED ABOVE)
     $j('body').on('click', function(e){
         var url = $j(e.target).attr('href');
         if (typeof url !== 'undefined') {
