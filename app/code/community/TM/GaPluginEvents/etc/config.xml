@@ -30,4 +30,15 @@
         </layout>
     </frontend>
 
+    <default>
+        <tm_googleanalytics>
+            <events_listen>
+                <addToCart>1</addToCart>
+                <addToCompare>1</addToCompare>
+                <addToWishlist>1</addToWishlist>
+                <newsletterSubscribe>1</newsletterSubscribe>
+            </events_listen>
+        </tm_googleanalytics>
+    </default>
+
 </config>

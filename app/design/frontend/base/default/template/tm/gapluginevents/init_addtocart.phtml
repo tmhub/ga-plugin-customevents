@@ -1,7 +1,7 @@
 <?php
     $request = Mage::app()->getRequest();
     $controller = array();
-    $controller[] = $request->getModuleName();
+    $controller[] = $request->getRouteName();
     $controller[] = $request->getControllerName();
     $controller[] = $request->getActionName();
     // remove index action or controller
@@ -22,9 +22,16 @@
     }
     $controller = array_map('ucfirst', $controller);
 
+    $config = Mage::getStoreConfig('tm_googleanalytics/events_listen');
+    // print_r($config); die;
+    // die(json_encode(Mage::getStoreConfig('tm_googleanalytics/events_listen')));
+
 ?>
 <script type="text/javascript">
     $j(function() {
-      analitycs.init('<?php echo implode($controller, ' ')?>');
+        analytics.init(
+            '<?php echo implode($controller, ' ')?>',
+            <?php echo json_encode(Mage::getStoreConfig('tm_googleanalytics/events_listen'))?>
+        );
     });
 </script>

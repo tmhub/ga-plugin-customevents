@@ -3,7 +3,10 @@
 //
 document.observe("AjaxPro:addObservers:after", function(){
 
-    if (typeof window.analitycs === 'undefined') { return; }
+    if (typeof window.analytics === 'undefined') {
+        console.warn('Seems like GA Plugin Events disabled...');
+        return;
+    }
 
     // after initalizing AjaxPro prevent sending GA event on click in product listing
     $$('.btn-cart').each(function(el){
@@ -23,13 +26,16 @@ document.observe("AjaxPro:addObservers:after", function(){
     });
 
     // wrap product add to cart form on product listing after popup appeared
-    analitycs.addToCart.wrapProductAddToCartSubmit();
+    analytics.addToCart.wrapProductAddToCartSubmit();
 
 });
 
 document.observe("AjaxPro:click:stop", function(event){
 
-    if (typeof window.analitycs === 'undefined') { return; }
+    if (typeof window.analytics === 'undefined') {
+        console.warn('Seems like GA Plugin Events disabled...');
+        return;
+    }
 
     var element = Event.element(event.memo);
     var url = $j(element).attr('href');

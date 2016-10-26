@@ -1,15 +1,5 @@
 (function($){
 
-    if (typeof window.analitycs === 'undefined') {
-        window.analitycs = {
-
-            init: function(mageController){
-                this.mageController = mageController;
-            }
-
-        };
-    }
-
     function getProductName(element, parentSelector) {
         var name = $(element).closest(parentSelector)
             .find(this.productNameSelector).first().text();
@@ -26,22 +16,41 @@
         return Math.round(parseFloat(price));
     }
 
+    window.analytics = {
+        init: function(mageController, settings){
+            this.mageController = mageController;
+            this.settings = settings;
+        }
+    };
+
     // add to cart events listening
-    window.analitycs.addToCart = {
+    window.analytics.addToCart = {
 
         init: function(parent) {
             this.parent = parent;
             this.priceSelector = '.special-price .price, .regular-price .price';
             this.productNameSelector = '.product-name';
+            // listen event and send GA Event
+            $.gaEvents([
+                {
+                    name: 'click',
+                    selector: '.btn-cart',
+                    handler: this.sendGaEventClick.bind(this)
+                },
+                {
+                    name: 'gaevent:product:submitted',
+                    selector: '',
+                    handler: this.sendGaEventSubmit.bind(this)
+                }
+            ]);
+            this.wrapProductAddToCartSubmit();
+            // prevent sending GA event on 'add to cart' on product view page
+            $('.product-essential .btn-cart').data('gaEventButtonClickOff', true);
         },
 
         sendGaEventClick: function(target){
-
             var button = $(target).closest('.btn-cart');
-            if (button.data('gaEventButtonClickOff')) {
-                return false;
-            }
-
+            if (button.data('gaEventButtonClickOff')) { return false; }
             return {
                 category : this.parent.mageController,
                 action: button.text(),
@@ -51,8 +60,8 @@
         },
 
         sendGaEventSubmit: function(target){
-
-            var productEssential = $(target).closest('.main-container, #ajaxpro-addcustomproduct-view')
+            var productEssential = $(target)
+                .closest('.main-container, #ajaxpro-addcustomproduct-view')
                 .find('.product-essential');
             return {
                 category : this.parent.mageController,
@@ -69,7 +78,7 @@
                         callOriginal(button, url, gaEventTriggered);
                         if (this.validator.validate() && !gaEventTriggered.value) {
                             // trigger event only ones to prevent duplicated calls
-                            $j(this.form).trigger('gaevent:product:submitted');
+                            $(this.form).trigger('gaevent:product:submitted');
                             gaEventTriggered.value = true;
                         }
                     }
@@ -78,23 +87,27 @@
         }
 
     };
-    window.analitycs.addToCart.init(window.analitycs);
 
     // add to compare events listening
-    window.analitycs.addToCompare = {
+    window.analytics.addToCompare = {
+
         init: function(parent) {
             this.parent = parent;
             this.priceSelector = '.special-price .price, .regular-price .price';
             this.productNameSelector = '.product-name';
+            // listen event and send GA Event
+            $.gaEvents([
+                {
+                    name: 'gaevent:product:addedtocompare',
+                    selector: '',
+                    handler: this.sendGaEvent.bind(this)
+                }
+            ]);
         },
 
         sendGaEvent: function(target){
-
             var button = $(target);
-            if (button.data('gaEventStop')) {
-                return false;
-            }
-
+            if (button.data('gaEventStop')) { return false; }
             return {
                 category : this.parent.mageController,
                 action: button.text(),
@@ -104,23 +117,26 @@
         }
 
     };
-    window.analitycs.addToCompare.init(window.analitycs);
 
     // add to whishlist events listening
-    window.analitycs.addToWishlist = {
+    window.analytics.addToWishlist = {
         init: function(parent) {
             this.parent = parent;
             this.priceSelector = '.special-price .price, .regular-price .price';
             this.productNameSelector = '.product-name';
+            // listen event and send GA Event
+            $.gaEvents([
+                {
+                    name: 'gaevent:product:addedtowishlist',
+                    selector: '',
+                    handler: this.sendGaEvent.bind(this)
+                }
+            ]);
         },
 
         sendGaEvent: function(target){
-
             var button = $(target);
-            if (button.data('gaEventStop')) {
-                return false;
-            }
-
+            if (button.data('gaEventStop')) { return false; }
             return {
                 category : this.parent.mageController,
                 action: button.text(),
@@ -130,22 +146,28 @@
         }
 
     };
-    window.analitycs.addToWishlist.init(window.analitycs);
 
     // subscribe to newsletter event listening
-    window.analitycs.newsletterSubscribe = {
+    window.analytics.newsletterSubscribe = {
+
         init: function(parent){
             this.parent = parent;
             this.buttonSelector = 'button';
             this.formSelector = '#newsletter-validate-detail';
+            // listen event and send GA Event
+            $.gaEvents([
+                {
+                    name: 'submit',
+                    selector: this.formSelector,
+                    handler: this.sendGaEvent.bind(this)
+                }
+            ]);
         },
 
         sendGaEvent: function(target){
-
             var form = $(target).closest(this.formSelector);
             var email = $(form).find('[type=email]');
             var actionText = $(email).attr('title') ? $(email).attr('title') : $(target).text();
-
             return {
                 category : this.parent.mageController,
                 action: actionText,
@@ -153,60 +175,14 @@
                 value: ''
             }
         }
+
     };
-    window.analitycs.newsletterSubscribe.init(window.analitycs);
 
 })($j);
 
 $j(function() {
 
-    // 1. HOOK EVENT ADD TO CART
-    // prevent sending GA event on 'add to cart' on product view page
-    $j('.product-essential .btn-cart').data('gaEventButtonClickOff', true);
-
-    $j.gaEvents([
-        {
-            name: 'click',
-            selector: '.btn-cart',
-            handler: analitycs.addToCart.sendGaEventClick.bind(analitycs.addToCart)
-        },
-        {
-            name: 'gaevent:product:submitted',
-            selector: '',
-            handler: analitycs.addToCart.sendGaEventSubmit.bind(analitycs.addToCart)
-        }
-    ]);
-
-    analitycs.addToCart.wrapProductAddToCartSubmit();
-
-    // 2. HOOK EVENT ADD TO COMPARE
-    $j.gaEvents([
-        {
-            name: 'gaevent:product:addedtocompare',
-            selector: '',
-            handler: analitycs.addToCompare.sendGaEvent.bind(analitycs.addToCompare)
-        }
-    ]);
-
-    // 3. HOOK EVENT ADD TO WISHLIST
-    $j.gaEvents([
-        {
-            name: 'gaevent:product:addedtowishlist',
-            selector: '',
-            handler: analitycs.addToWishlist.sendGaEvent.bind(analitycs.addToWishlist)
-        }
-    ]);
-
-    // 4. HOOK EVENT NEWSLETTER SUBSCRIBTION
-    $j.gaEvents([
-        {
-            name: 'submit',
-            selector: analitycs.newsletterSubscribe.formSelector,
-            handler: analitycs.newsletterSubscribe.sendGaEvent.bind(analitycs.newsletterSubscribe)
-        }
-    ]);
-
-    // TRIGER CUSTOM EVENTS FOR ADD TO COMPARE/WISHLIST (THEY HOOKED ABOVE)
+    // TRIGER CUSTOM EVENTS FOR ADD TO COMPARE/WISHLIST
     $j('body').on('click', function(e){
         var url = $j(e.target).attr('href');
         if (typeof url !== 'undefined') {
@@ -218,6 +194,15 @@ $j(function() {
                 $j(e.target).trigger('gaevent:product:addedtowishlist');
             }
         }
-    })
+    });
+
+    // INITIALIZE EVENTS LISTENERS
+    $j.each(analytics.settings, function(key, value){
+        if (value == '1') {
+            analytics[key].init(analytics);
+        } else {
+            delete analytics[key];
+        }
+    });
 
 });
