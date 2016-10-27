@@ -37,6 +37,7 @@
                 <addToCompare>1</addToCompare>
                 <addToWishlist>1</addToWishlist>
                 <newsletterSubscribe>1</newsletterSubscribe>
+                <contactUs>1</contactUs>
             </events_listen>
         </tm_googleanalytics>
     </default>

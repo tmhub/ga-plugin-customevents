@@ -40,6 +40,11 @@
       };
     }
 
+    if (!universalGA && !classicGA && !(typeof standardEventHandler === 'function')) {
+      // notify in browser console - there is no GA
+      console.warn('Google Analytics not found...');
+    }
+
     function sendEvent(category, action, label, value) {
 
       if (standardEventHandler) {

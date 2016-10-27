@@ -178,6 +178,37 @@
 
     };
 
+    // contact us submit event listening
+    window.analytics.contactUs = {
+
+        init: function(parent){
+            this.parent = parent;
+            this.buttonSelector = '.button[type=submit]';
+            this.formSelector = '#contactForm';
+            // listen event and send GA Event
+            $.gaEvents([
+                {
+                    name: 'submit',
+                    selector: this.formSelector,
+                    handler: this.sendGaEvent.bind(this)
+                }
+            ]);
+        },
+
+        sendGaEvent: function(target){
+            var form = $(target).closest(this.formSelector);
+            var button = $(form).find(this.buttonSelector);
+            var actionText = $(button).text() ? $(button).text() : 'Submit';
+            return {
+                category : this.parent.mageController,
+                action: actionText,
+                label: '',
+                value: ''
+            }
+        }
+
+    };
+
 })($j);
 
 $j(function() {
