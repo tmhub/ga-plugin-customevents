@@ -21,6 +21,15 @@
     </global>
 
     <frontend>
+        <routers>
+            <tm_gapluginevents>
+                <use>standard</use>
+                <args>
+                    <module>TM_GaPluginEvents</module>
+                    <frontName>gaevents</frontName>
+                </args>
+            </tm_gapluginevents>
+        </routers>
         <layout>
             <updates>
                 <tm_gapluginevents module="TM_GaPluginEvents">

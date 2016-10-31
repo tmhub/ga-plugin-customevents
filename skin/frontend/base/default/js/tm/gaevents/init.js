@@ -152,7 +152,8 @@
 
         init: function(parent){
             this.parent = parent;
-            this.buttonSelector = 'button';
+            this.actionText = 'Subscribe';
+            this.labelText = 'Newsletter';
             this.formSelector = '#newsletter-validate-detail';
             // listen event and send GA Event
             $.gaEvents([
@@ -165,14 +166,10 @@
         },
 
         sendGaEvent: function(target){
-            var form = $(target).closest(this.formSelector);
-            var email = $(form).find('[type=email]');
-            var actionText = $(email).attr('title') ? $(email).attr('title') : $(target).text();
             return {
                 category : this.parent.mageController,
-                action: actionText,
-                label: '',
-                value: ''
+                action: this.actionText,
+                label: this.labelText
             }
         }
 
@@ -183,7 +180,8 @@
 
         init: function(parent){
             this.parent = parent;
-            this.buttonSelector = '.button[type=submit]';
+            this.actionText = 'Submit';
+            this.labelText = 'Contact Us';
             this.formSelector = '#contactForm';
             // listen event and send GA Event
             $.gaEvents([
@@ -196,14 +194,10 @@
         },
 
         sendGaEvent: function(target){
-            var form = $(target).closest(this.formSelector);
-            var button = $(form).find(this.buttonSelector);
-            var actionText = $(button).text() ? $(button).text() : 'Submit';
             return {
                 category : this.parent.mageController,
-                action: actionText,
-                label: '',
-                value: ''
+                action: this.actionText,
+                label: this.labelText
             }
         }
 
@@ -223,8 +217,29 @@ $j(function() {
             } else if (url.indexOf('wishlist/index/add') != -1) {
                 // it is add to wishlist click
                 $j(e.target).trigger('gaevent:product:addedtowishlist');
+            } else if (url.indexOf('/checkout/cart') != -1) {
+                // trigger event when clicked on url to checkout cart
+                $j(e.target).trigger('gaevent:checkout:cart');
+            } else if (url.indexOf('/checkout') != -1) {
+                // trigger event when clicked on url to onepage checkout
+                $j(e.target).trigger('gaevent:checkout:onepage');
+            } else if (url.indexOf('/firecheckout') != -1) {
+                // trigger event when clicked on url to firecheckout
+                $j(e.target).trigger('gaevent:checkout:onepage');
             }
         }
+    });
+
+    setLocation = setLocation.wrap(function(callOriginal, url){
+        // trigger checkout event when location to checkout cart or page
+        if (url.indexOf('/checkout/cart') != -1) {
+            $j(document).trigger('gaevent:checkout:cart');
+        } else if (url.indexOf('/checkout') != -1) {
+            $j(document).trigger('gaevent:checkout:onepage');
+        } else if (url.indexOf('/firecheckout') != -1) {
+            $j(document).trigger('gaevent:checkout:onepage');
+        };
+        return callOriginal(url);
     });
 
     // INITIALIZE EVENTS LISTENERS
