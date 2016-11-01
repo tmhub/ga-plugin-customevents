@@ -72,6 +72,7 @@
 
     }
 
+    // add listeners
     for (var i = 0; i < listenJsEvents.length; i++) {
       var jsEvent = listenJsEvents[i];
 
@@ -80,7 +81,7 @@
           var handler = e.data,
               gaEventData = false;
           if (handler) {
-            gaEventData = handler(e.target);
+            gaEventData = handler(e.target, e.type);
           }
           if (gaEventData) {
             var debugMode = $('body').hasClass('gaevents-debug');

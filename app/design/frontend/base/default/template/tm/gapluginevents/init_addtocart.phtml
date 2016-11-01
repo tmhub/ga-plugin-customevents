@@ -25,13 +25,18 @@
     $config = Mage::getStoreConfig('tm_googleanalytics/events_listen');
     // print_r($config); die;
     // die(json_encode(Mage::getStoreConfig('tm_googleanalytics/events_listen')));
+    //
+    $initData['mage'] = array();
+    $initData['mage']['baseUrl'] = Mage::getBaseUrl(
+            Mage_Core_Model_Store::URL_TYPE_WEB,
+            $request->isSecure()
+        );
+    $initData['mage']['controller'] = implode($controller, ' ');
+    $initData['listen'] = Mage::getStoreConfig('tm_googleanalytics/events_listen');
 
 ?>
 <script type="text/javascript">
     $j(function() {
-        analytics.init(
-            '<?php echo implode($controller, ' ')?>',
-            <?php echo json_encode(Mage::getStoreConfig('tm_googleanalytics/events_listen'))?>
-        );
+        analytics.init(<?php echo json_encode($initData);?>);
     });
 </script>

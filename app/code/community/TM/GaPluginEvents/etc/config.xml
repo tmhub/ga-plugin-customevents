@@ -47,6 +47,7 @@
                 <addToWishlist>1</addToWishlist>
                 <newsletterSubscribe>1</newsletterSubscribe>
                 <contactUs>1</contactUs>
+                <checkout>1</checkout>
             </events_listen>
         </tm_googleanalytics>
     </default>
