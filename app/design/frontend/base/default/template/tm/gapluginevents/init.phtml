@@ -1,0 +1,19 @@
+<?php
+    $mage['baseUrl'] = Mage::getBaseUrl(
+            Mage_Core_Model_Store::URL_TYPE_WEB,
+            Mage::app()->getRequest()->isSecure()
+        );
+    $mage['controller'] = Mage::helper('tm_gapluginevents')
+        ->getControllerName();
+
+    $initData = array(
+            'mage' => $mage,
+            'listen' => Mage::getStoreConfig('tm_googleanalytics/events_listen')
+        );
+
+?>
+<script type="text/javascript">
+    $j(function() {
+        analytics.init(<?php echo json_encode($initData);?>);
+    });
+</script>

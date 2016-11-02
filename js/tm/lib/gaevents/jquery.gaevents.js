@@ -18,9 +18,12 @@
   var universalGA = false,
     classicGA = false,
     gaGlobal,
-    standardEventHandler;
+    standardEventHandler,
+    flagGADisabled = false;
 
   $.gaEvents = function(listenJsEvents) {
+
+    if (flagGADisabled) { return; }
 
     if (typeof ga === "function") {
       universalGA = true;
@@ -43,6 +46,7 @@
     if (!universalGA && !classicGA && !(typeof standardEventHandler === 'function')) {
       // notify in browser console - there is no GA
       console.warn('Google Analytics not found...');
+      flagGADisabled = true;
     }
 
     function sendEvent(category, action, label, value) {
@@ -77,11 +81,13 @@
       var jsEvent = listenJsEvents[i];
 
       $(document).on(
-        jsEvent.name, jsEvent.selector, jsEvent.handler, function(e){
-          var handler = e.data,
+        jsEvent.name, jsEvent.selector, jsEvent.handler, function (event) {
+          var handler = event.data,
               gaEventData = false;
           if (handler) {
-            gaEventData = handler(e.target, e.type);
+            gaEventData = handler(
+              event // jQuery event object
+            );
           }
           if (gaEventData) {
             var debugMode = $('body').hasClass('gaevents-debug');

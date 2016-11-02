@@ -13,6 +13,26 @@
             </action>
             <action method="addItem" ifconfig="tm_googleanalytics/events/enabled">
                 <type>skin_js</type>
+                <name>js/tm/gaevents/analytics.js</name>
+                <params>defer</params>
+            </action>
+            <action method="addItem" ifconfig="tm_googleanalytics/events/enabled">
+                <type>skin_js</type>
+                <name>js/tm/gaevents/catalog.js</name>
+                <params>defer</params>
+            </action>
+            <action method="addItem" ifconfig="tm_googleanalytics/events/enabled">
+                <type>skin_js</type>
+                <name>js/tm/gaevents/checkout.js</name>
+                <params>defer</params>
+            </action>
+            <action method="addItem" ifconfig="tm_googleanalytics/events/enabled">
+                <type>skin_js</type>
+                <name>js/tm/gaevents/others.js</name>
+                <params>defer</params>
+            </action>
+            <action method="addItem" ifconfig="tm_googleanalytics/events/enabled">
+                <type>skin_js</type>
                 <name>js/tm/gaevents/init.js</name>
                 <params>defer</params>
             </action>
@@ -25,7 +45,7 @@
         <reference name="before_body_end">
             <block type="core/template" name="gaevent_addtocart_init">
                 <action method="setTemplate" ifconfig="tm_googleanalytics/events/enabled">
-                    <template>tm/gapluginevents/init_addtocart.phtml</template>
+                    <template>tm/gapluginevents/init.phtml</template>
                 </action>
             </block>
         </reference>

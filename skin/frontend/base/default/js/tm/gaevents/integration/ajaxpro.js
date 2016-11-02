@@ -4,9 +4,9 @@
 document.observe("AjaxPro:addObservers:after", function(){
 
     if (typeof window.analytics === 'undefined') {
-        console.warn('Seems like GA Plugin Events disabled...');
+        // console.warn('Seems like GA Plugin Events disabled...');
         return;
-    }
+    };
 
     // after initalizing AjaxPro prevent sending GA event on click in product listing
     $$('.btn-cart').each(function(el){
@@ -26,16 +26,23 @@ document.observe("AjaxPro:addObservers:after", function(){
     });
 
     // wrap product add to cart form on product listing after popup appeared
-    analytics.addToCart.wrapProductAddToCartSubmit();
+    if (typeof analytics.addToCart !== 'undefined') {
+        analytics.addToCart.wrapProductAddToCartSubmit();
+    };
+
+    // refresh cart totals
+    if (typeof analytics.checkout !== 'undefined') {
+        analytics.checkout.getCartTotals();
+    };
 
 });
 
 document.observe("AjaxPro:click:stop", function(event){
 
     if (typeof window.analytics === 'undefined') {
-        console.warn('Seems like GA Plugin Events disabled...');
+        // console.warn('Seems like GA Plugin Events disabled...');
         return;
-    }
+    };
 
     var element = Event.element(event.memo);
     var url = $j(element).attr('href');
@@ -48,6 +55,6 @@ document.observe("AjaxPro:click:stop", function(event){
             // it is add to wishlist click
             $j(element).trigger('gaevent:product:addedtowishlist');
         }
-    }
+    };
 
 });
