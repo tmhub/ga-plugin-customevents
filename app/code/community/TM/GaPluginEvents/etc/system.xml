@@ -10,9 +10,9 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <events translate="label comment" module="tm_gapluginscrolldepth">
+                <events translate="label comment" module="tm_gapluginevents">
                     <label>Additional Events</label>
-                    <comment>This extension provides functionality to send additional events to your Google Analytics</comment>
+                    <comment><![CDATA[<i>This extension allows you to track different events (customer interactions) at your store and send them to Google Analytics.</i>]]></comment>
                     <sort_order>200</sort_order>
                     <show_in_default>1</show_in_default>
                     <show_in_website>1</show_in_website>
@@ -45,57 +45,7 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </heading_listen>
-                        <addToCart>
-                            <label>"Add to Cart" event</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <config_path>tm_googleanalytics/events_listen/addToCart</config_path>
-                            <sort_order>20</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </addToCart>
-                        <addToCompare>
-                            <label>"Add to Compare" event</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <config_path>tm_googleanalytics/events_listen/addToCompare</config_path>
-                            <sort_order>30</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </addToCompare>
-                        <addToWishlist>
-                            <label>"Add to Wishlist" event</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <config_path>tm_googleanalytics/events_listen/addToWishlist</config_path>
-                            <sort_order>40</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </addToWishlist>
-                        <newsletterSubscribe>
-                            <label>"Subscribe to Newsletter" event</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <config_path>tm_googleanalytics/events_listen/newsletterSubscribe</config_path>
-                            <sort_order>50</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </newsletterSubscribe>
-                        <contactUs>
-                            <label>"Contact Us" event</label>
-                            <frontend_type>select</frontend_type>
-                            <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <config_path>tm_googleanalytics/events_listen/contactUs</config_path>
-                            <sort_order>60</sort_order>
-                            <show_in_default>1</show_in_default>
-                            <show_in_website>1</show_in_website>
-                            <show_in_store>1</show_in_store>
-                        </contactUs>
-                        <checkout>
+                        <checkout translate="label comment">
                             <label>Checkout events</label>
                             <comment>Listen "View Cart" and "Go to Checkout" events</comment>
                             <frontend_type>select</frontend_type>
@@ -106,6 +56,56 @@
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                         </checkout>
+                        <addToCart translate="label">
+                            <label>"Add to Cart" event</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>tm_googleanalytics/events_listen/addToCart</config_path>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </addToCart>
+                        <addToCompare translate="label">
+                            <label>"Add to Compare" event</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>tm_googleanalytics/events_listen/addToCompare</config_path>
+                            <sort_order>30</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </addToCompare>
+                        <addToWishlist translate="label">
+                            <label>"Add to Wishlist" event</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>tm_googleanalytics/events_listen/addToWishlist</config_path>
+                            <sort_order>40</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </addToWishlist>
+                        <newsletterSubscribe translate="label">
+                            <label>"Subscribe to Newsletter" event</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>tm_googleanalytics/events_listen/newsletterSubscribe</config_path>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </newsletterSubscribe>
+                        <contactUs translate="label">
+                            <label>"Contact Us" event</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <config_path>tm_googleanalytics/events_listen/contactUs</config_path>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </contactUs>
                     </fields>
                 </events>
             </groups>

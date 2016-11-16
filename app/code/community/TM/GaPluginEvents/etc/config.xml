@@ -40,8 +40,14 @@
     </frontend>
 
     <default>
+        <tmcore>
+            <jslibs>
+                <jquery>1</jquery>
+            </jslibs>
+        </tmcore>
         <tm_googleanalytics>
             <events_listen>
+                <enabled>0</enabled>
                 <addToCart>1</addToCart>
                 <addToCompare>1</addToCompare>
                 <addToWishlist>1</addToWishlist>
