@@ -3,7 +3,7 @@
     "type": "magento-module",
     "homepage": "https://github.com/tmhub/ga-plugin-events",
     "license": "OSL-3.0",
-    "description": "Google Analytics plugin to send additional events",
+    "description": "Track different events at your store and send them to Gogole Analytics",
     "authors": [
         {
             "name": "Templates-Master Team",
